@@ -1,0 +1,129 @@
+
+\NeedsTeXFormat{LaTeX2e}
+\documentclass[11pt]{article}
+
+
+\usepackage{setspace}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{epsfig}
+\usepackage{fancybox}
+\usepackage{listings}
+\usepackage{url}
+\usepackage{pgfgantt}
+\usepackage{tikz}
+
+\setlength{\textheight}{9.5in}
+\setlength{\textwidth}{6in}
+\setlength{\oddsidemargin}{.25in}
+\setlength{\topmargin}{-0.7in}  % changed from -.25 by RSR on 1/21/07
+%\parindent .5in    % commented out by RSR 1/21/07
+
+%put words in the hyphenation statement if you want to enforce
+%how LaTeX should break them (or not) at the end of a line.
+%\hyphenation{repre-sen-tations problems exact linear}
+\hyphenation{itself}
+\usepackage{cite}
+
+\makeatletter
+\ganttset{
+    prog default/.initial=100,
+    prog/.code={
+        \pgfutil@in@{:}{#1}
+        \ifpgfutil@in@
+            \pgfqkeysalso{/pgfgantt}{@prog={#1}}
+        \else
+            \pgfqkeysalso{/pgfgantt}{@prog={\pgfkeysvalueof{/pgfgantt/prog default}:#1}}
+        \fi
+    },
+    @prog/.code args={#1:#2}{
+        \pgfqkeysalso{/pgfgantt}{progress=100, progress label text={\hspace{0.02cm}#2}}
+    }
+}
+\makeatother
+\ganttset{progress label anchor/.append style={text=red}}
+
+\title{\vspace{-1.7cm}Challenge Proposal for the Hacking Challenge Creation
+\\[0.3in]
+\bfseries A cool name
+\\[0.1in]
+}
+\author{Alexander Daniel Nikolaos Lelidis, Andr\'{e} Baptista \'{A}guas, \\ Ard Kastrati, Khalid Aldughayem, Uro\v{s} Te\v{s}i\'{c}}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This challenge combines two different tasks from Web Security and Steganography. It addresses the problem of the predictable sessions and the security through obscurity. The idea of this challenge is first to bypass the authorization in the HTTP level by hijacking a session with a predictable session ID. Secondly, the attacker must extract the secret information which is hidden by using steganography instead of cryptography. 
+\end{abstract}
+
+
+\section{Requirements}
+\begin{itemize}
+\item A program to reverse the Mersenne Twister.
+\item Basic knowlegedge about steganography.
+\end{itemize}
+
+\section{Learning goals}
+There are three different learning goals in this challenge:
+\begin{enumerate}
+\item \textit{If the attacker can control the pseudorandom generator, then he can control everything.} \\
+	As discussed in the lecture, controlling the pseudorandom generators is the perfect attack, since it is almost impossible to detect. Generating not truly random numbers are very hard to detect. 
+	
+\item \textit{The security of an algorithm should rely solely on the secrecy of the key} \cite{katzlindell} \\
+Never use algorithm whose security relies solely on the fact that the algorithm is secret. One speaks of security by obscurity. Such algorithms are unflexible and insecure from today’s point of view. For example, if the algorithm is somehow revealed, then the whole algorithm should be changed. Next, all the parties that partake in the communication must know the algorithm, meaning they can decrypt all the other participant’s messages. With security through obscurity it is also not possible to establish standard algorithms, which can be tested from others. As a countermeasure, Kerckhoffs's principles have been established. 
+In 1833, Auguste Kerkhoffs stated six design principles for military ciphers in \cite{Kerckhoffs83} and one of them is \cite{katzlindell}:
+\begin{itemize}
+\item The cipher method should not be required to be secret, and it must be able to fall into the hands of the enemy without inconvenience.
+\end{itemize}
+It is worth mentioning that this Kerkhoff's principle has been often ignored, which led to fatal results. 
+	\item \textit{Adding more different unsecure mechanisms in the system doesn't make it more secure, since the attacker can simply bypass all of them one after another.}\\
+	
+\end{enumerate}
+
+
+\section{Mission}
+Alice and Bob need to share a secret with each other. However, they don't trust the security of the chat in the website ``A cool name''. One day Alice reads about the \textit{steganography} and she was amazed. As a beginner in modern cryptography, she thought that this has to be the best way to share secrets. Without further thinking she arranges a meeting with Bob and they decide to hide their data in different pictures that they send to each other. Alice was right about one thing: \textit{The website is indeed not secure and there is a way to bypass the login page}. Ironically, the \textit{steganography} is not much more secure than that. Hence, adding \textit{steganography} as a measure of security won't help them. Your mission, should you choose to accept it, is to bypass the login page for \textit{Alice} or \textit{Bob}, read the data exchanged between them and extract the secret message that they exchanged with each other.
+
+\section{Mitigation}
+\begin{enumerate}
+\item Use cryptographically secure pseudorandom number generator (CSPNR).
+\item Use standard encryption schemes from modern cryptography (instead of steganography) for confidentiality (such as AES, RSA, El-Gammal etc).
+\end{enumerate}
+
+
+\section{Type of Challenge}
+Online
+
+\section{Category}
+Web Security \& Cryptography
+
+\section{Hints}
+\begin{itemize}
+\item Mersenne Twister is used to generate the session keys!
+\item The secret data is hidden in only some of the bits in every pixel.
+\end{itemize}
+
+
+
+\section{Step-by-step instructions}
+\begin{itemize}
+\item Generate 624 session IDs by logging in 624 times.
+\item Get the state of the generator of the Mersenne Twister
+\item Predict the next session ID.
+\item Wait for \textit{Alice} to log in\footnote{In order for this to be possible, we plan to implement that every 15 minutes \textit{Alice} logs in the website.}.
+\item Log in by using the session ID (Session hijacking)
+\item User logs into website where he sees the chat and images
+\item Extract the location by using the LSB of each pixel.
+\end{itemize}
+
+
+\textsc{Remark.\quad} Another way to predict session IDs is to provide a feature in the application level that issues random numbers. We instantiate for some basic feature in the application level a \textbf{different} pseudorandom generator but with the \textbf{same seed} that was used for the generation of the session IDs (e.g. we instantiate for each chat the same pseudorandom generator that was used for the session ID generation and for every message that is sent within the chat a new random number number is generated). This way, the attacker can generate all random numbers (which are used for session IDs) by only sending arbitrary messages in one arbitrary chat. He can then know all session IDs and find the one that belongs to \textit{Alice} by simply trying them all. In case the reversing process of the Mersenne Twister is a tedious work for the attacker we can change it to this alternative.
+
+\begin{spacing}{1}
+  \bibliographystyle{plain}
+  \bibliography{mybibtexDB}
+\end{spacing}
+
+\end{document}

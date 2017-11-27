@@ -1,0 +1,14 @@
+\begin{thebibliography}{1}
+
+\bibitem{katzlindell}
+Jonathan Katz and Yehuda Lindell.
+\newblock {\em Introduction to Modern Cryptography (Chapman \& Hall/Crc
+  Cryptography and Network Security Series)}.
+\newblock Chapman \& Hall/CRC, 2007.
+
+\bibitem{Kerckhoffs83}
+Auguste Kerckhoffs.
+\newblock {La cryptographie militaire}.
+\newblock {\em Journal des sciences militaires}, IX:5--83, January 1883.
+
+\end{thebibliography}
