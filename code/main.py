@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, make_response
+from flask import Flask, render_template, request, make_response, send_from_directory
 app = Flask(__name__)
 
 currentValidCookie = "123"
@@ -11,6 +11,10 @@ def checkCookie(cookie):
         return True
     else:
         return False
+
+@app.route('/robots.txt')
+def static_from_root():
+    return send_from_directory(app.static_folder, request.path[1:])
 
 @app.route('/')
 def display():
