@@ -7,62 +7,43 @@
 <body>
 
 <div class="navbar">
-  <a href="home">Home</a>
+  <a href="/">Home</a>
   <a href="news">News</a>
   <a href="chat">Chat</a>
-  <a href="/">Logout</a>
+  <a href="logout">Logout</a>
 </div>
 
 <div class="main">
     <div style="margin-top: 35px;">
-        <div class="container">
-            <img src="/static/terrorist1.jpg" alt="Avatar" class="avatar" >
-            <p>Hello. How are you today?</p>
-            <span class="time-right">11:00</span>
-        </div>
+        {% for message, reply in chat['messages'] %}
+            <div class="container">
+                <img src="{{ profile_pic }}" alt="Avatar" class="avatar" >
+                <p>{{ message }}</p>
+                <span class="time-right">11:00</span>
+            </div>
 
-        <div class="container darker">
-            <img src="/static/terrorist2.jpg" alt="Avatar" class="right avatar">
-            <p>Hey! I'm fine. Thanks for asking!</p>
-            <span class="time-left">11:01</span>
-        </div>
+            <div class="container darker">
+                <img src="{{ chat['image recipient'] }}" alt="Avatar" class="right avatar">
+                <p>{{ reply }}</p>
+                <span class="time-left">11:01</span>
+            </div>
+        {% endfor %}
 
-        <div class="container">
-            <img src="/static/terrorist1.jpg" alt="Avatar" class="avatar" >
-            <p>Sweet! So, are you ready for your mission?</p>
-            <span class="time-right">11:02</span>
-        </div>
+        {% if 'image message' in chat %}
+            <div class="container">
+                <img src="{{ profile_pic }}" alt="Avatar" class="avatar" >
+                <img src="{{ chat['image message'][0] }}" alt="chat image" class="chatImage" >
+                <span class="time-right">11:09</span>
+            </div>
 
-        <div class="container darker">
-            <img src="/static/terrorist2.jpg" alt="Avatar" class="right avatar" >
-            <p>Yes bro I am so ready! 72 Virgins cant wait.</p>
-            <span class="time-left">11:06</span>
-        </div>
-
-        <div class="container ">
-            <img src="/static/terrorist1.jpg" alt="Avatar" class="avatar">
-            <p>All right, you know what to do?</p>
-            <span class="time-right">11:07</span>
-        </div>
-
-        <div class="container darker">
-            <img src="/static/terrorist2.jpg" alt="Avatar" class="right avatar" >
-            <p>Yes I just the coordinates!</p>
-            <span class="time-left">11:08</span>
-        </div>
-        <div class="container">
-            <img src="/static/terrorist1.jpg" alt="Avatar" class="avatar" >
-            <img src="/static/image.jpg" alt="chat image" class="chatImage" >
-            <span class="time-right">11:09</span>
-        </div>
-
-        <div class="container darker">
-            <img src="/static/terrorist2.jpg" alt="Avatar" class="right avatar" >
-            <p>All right! See you on ther other side</p>
-            <span class="time-left">11:10</span>
-        </div>
+            <div class="container darker">
+                <img src="{{ chat['image recipient'] }}" alt="Avatar" class="right avatar" >
+                <p>{{ chat['image message'][1] }}</p>
+                <span class="time-left">11:10</span>
+            </div>
+        {% endif %}
     </div>
-<div>
+</div>
 
 </body>
 </html>
