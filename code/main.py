@@ -95,7 +95,7 @@ def login_form():
         loggedInUserCookies[value] = data['user']
         session['username'] = data['user']
         return response
-    # If the login is fails the login page is sent again
+    # If the login fails the login page is sent again
     #
     else:
         return make_response(render_template('login.html'))
@@ -171,7 +171,7 @@ def populate_db():
                                                          ["Sweet! So, are you ready for your mission?", "Yes bro I am so ready! 72 Virgins cant wait."],
                                                          ["All right, you know what to do?", "Yes, I just need the coordinates!"],
                                                          ],
-                                            'image message': ['static/image.jpg', 'All right! See you on ther other side'],
+                                            'image message': ['static/target.png', 'All right! See you on ther other side'],
                                             'image recipient': 'static/terrorist1.jpg'
                                             },
                                    'news': {'cover': 'static/cover.jpg', 'one third': 'static/rifle.jpg',
