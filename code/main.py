@@ -157,21 +157,21 @@ def chat():
 
 """ Create a json dump with the user profile's data """
 def populate_db():
-    data = {'profiles': {'admin': {'name': 'Johnny Appleseed',
+    data = {'profiles': {'admin': {'name': 'Mohammad Lee',
                                    'city': 'San Francisco, CA',
                                    'reputation': 185,
                                    'kills_title': 'Kills',
                                    'kills': 344,
                                    'days out': 127,
-                                   'about me': 'Eniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+                                   'about me': 'متخصص في أمن المعلومات والتعمية. الموت للخونة.',
                                    'image': 'static/terrorist2.jpg',
                                    'friends': 'Your friends - 106 total',
-                                   'friend names': ['Osama', 'Imad', 'Hasan', 'Ali', 'Abdul', 'Mohamed'],
-                                   'chat': {'messages': [["Hello. How are you today?", "Hey! I'm fine. Thanks for asking!"],
-                                                         ["Sweet! So, are you ready for your mission?", "Yes bro I am so ready! 72 Virgins cant wait."],
-                                                         ["All right, you know what to do?", "Yes, I just need the coordinates!"],
+                                   'friend names': ['Osama', 'Imad', 'Hasan', 'Ali', 'Abdul', 'Omar'],
+                                   'chat': {'messages': [["السلام عليكم", "وعليكم السلام ورحمة الله وبركاته"],
+                                                         ["هل أنت جاهز لأداء المهمة؟", "بالتأكيد، لا أطيق الصبر حتى أصل إلى الجنة"],
+                                                         ["أتعرف ماذا عليك أن تفعل؟", "نعم، أرسل الإحداثيات"],
                                                          ],
-                                            'image message': ['static/target.png', 'All right! See you on ther other side'],
+                                            'image message': ['static/target.png', 'ممتاز، سأنتظرك في الجانب الآخر'],
                                             'image recipient': 'static/terrorist1.jpg'
                                             },
                                    'news': {'cover': 'static/cover.jpg', 'one third': 'static/rifle.jpg',
