@@ -58,7 +58,7 @@
 \maketitle
 
 \begin{abstract}
-This challenge combines two different tasks from Web Security and Steganography. It addresses the problem of the predictable sessions and the security through obscurity. The idea of this challenge is first to bypass the authorization in the HTTP level by hijacking a session with a predictable session ID. Secondly, the attacker must extract the secret information which is hidden by using steganography instead of cryptography. 
+This challenge combines two different tasks from Web Security and Steganography. It addresses the problem of the predictable sessions and the security through obscurity. The idea of this challenge is to first bypass the authorization in the HTTP level by hijacking a session with a predictable session ID. Secondly, the attacker must extract the secret information which is hidden by using steganography instead of cryptography. 
 \end{abstract}
 
 
@@ -80,7 +80,7 @@ with open("mersenneCookies.txt","w") as output:
     requests.post('http://<ip address>:5000/logout',cookies=r.cookies)
 \end{verbatim}
 where \texttt{<ip address>} must be set to the IP address of server. 
-\item A cookie editor in your web browser. We recommend you to use developer tools in Firefox (\textit{Tools} $\rightarrow$ \textit{Web Developer} $\rightarrow$ \textit{Toggle Tools}).
+\item A cookie editor in your web browser. We recommend you use developer tools in Firefox (\textit{Tools} $\rightarrow$ \textit{Web Developer} $\rightarrow$ \textit{Toggle Tools}).
 \item Basic knowledge about steganography.
 \end{itemize}
 
@@ -91,7 +91,7 @@ There are three different learning goals in this challenge:
 	As discussed in the lecture, controlling the pseudorandom generators is the perfect attack, since it is almost impossible to detect. Generating not truly random numbers are very hard to detect. 
 	
 \item \textit{The security of an algorithm should rely solely on the secrecy of the key} \cite{katzlindell} \\
-Never use algorithm whose security relies solely on the fact that the algorithm is secret. One speaks of security by obscurity. The advantage of steganography over cryptography alone is that the intended secret message does not attract attention to itself as an object of scrutiny. However, \textit{once} it is known that something secret is hidden there, steganography is insecure from today’s point of view. With security through obscurity it is not possible to establish standard algorithms, which can be tested from others. As a countermeasure, Kerckhoffs's principles have been established. 
+Never use an algorithm, the security of which relies solely on the fact that the algorithm is secret. One speaks of security through obscurity. The advantage of steganography over cryptography alone is that the intended secret message does not attract attention to itself as an object of scrutiny. However, \textit{once} it is known that something secret is being hidden, steganography is insecure from today’s point of view. With security through obscurity it is not possible to establish standard algorithms, which can be tested from others. As a countermeasure, Kerckhoffs's principles have been established. 
 In 1833, Auguste Kerkhoffs stated six design principles for military ciphers in \cite{Kerckhoffs83} and one of them is \cite{katzlindell}:
 \begin{itemize}
 \item The cipher method should not be required to be secret, and it must be able to fall into the hands of the enemy without inconvenience.
@@ -131,7 +131,7 @@ Web Security \& Cryptography
 
 \section{Setup}
 \begin{itemize}
-\item Start the client and the server in VirtualBox\footnote{Make sure that the machine is connected with Host-only adapter. See README file if any problems occur.} or VMWare. The credentials are:
+\item Start the client and the server using VirtualBox\footnote{Make sure that the machine is connected with Host-only adapter. See README file if any problems occur.} or VMWare. The credentials are:
 \begin{itemize}
 	\item Client
 	\begin{verbatim}
@@ -143,29 +143,29 @@ Web Security \& Cryptography
 			password: ERenaRboRy
 		\end{verbatim}
 \end{itemize}
-\item Find the IP address of the server by running \texttt{ifconfig} in the server inside the server machine.
-\item Open the browser and type the \texttt{<ip address of the server>:5000}
+\item Find the IP address of the server by running \texttt{ifconfig} on the server inside the server machine.
+\item Open the browser and enter the following URL: \texttt{<ip address of the server>:5000}
 \end{itemize}
 
 
 \section{Solution}
 
 \subsection{Idea of the solution}
-After logging in, we see a harmless profile with chat and news. However, if we look in cookies, we will see a \texttt{netsecLoginCookie}. If we log out and log in again, we see that the value changed. Multiple logins tell us that the cookie is always less than 32-bits, and its value changes randomly. That randomness is the key. Website is written in python and flask framework. Python uses Mersenne twister as PRNG. MT has a period length of $2^{19937}$. However, this doesn't guarantee its safety. There are two possible attacks on this PRNG:
+After logging in, we see a harmless profile with chat and news. However, if we look at the cookies, we will see a \texttt{netsecLoginCookie}. If we log out and log in again, we see that the value changed. Multiple logins tell us that the cookie is always less than 32-bits, and its value changes randomly. That randomness is the key. Mersenne twister is not a cryptographically secure pseudorandom generator. There are two possible attacks on this PRNG:
 \begin{itemize}
-\item We can download Untwister program (\url{https://github.com/altf4/untwister}) presented at BSides in Las Vegas in 2014. We only need a few generated values to obtain the seed. Unfortunately, this is done by brute force. It is possible to do it this way because seed has 32-bits, but it still takes 3-4 hours in the general case. We decided to use a small seed value so this attack takes only a few seconds.
-\item  If we take a look at Mersenne twister implementation, we can see that it is just a big XOR machine with 624 numbers as its state. Every number is transformed (tempered), and output as a random values, until all 624 numbers are used. The state is then transformed together, and the cycle continues. Tempering can be inverted, and we can easily reconstruct the entire state of the PRNG, and guess every subsequent number. This requires 625 consequent integers (state plus one more number in case of refresh). For this attack to work no one but us is allowed to log in when we poll the server. In case that the admin logs in, we must start again.
+\item We can download Untwister (\url{https://github.com/altf4/untwister}) presented at BSides in Las Vegas in 2014. We only need a few generated values to obtain the seed. Unfortunately, this is done by brute force. It is possible to do it this way because seed has 32-bits, but it still takes 3-4 hours in the general case. We decided to use a small seed value, so this attack takes only a few seconds.
+\item  If we look at the implementation of the Mersenne twister, we can see that it is just a big XOR machine with 624 numbers as its state. Every number is transformed (tempered), and output as a random value, until all 624 numbers are used. The state is then transformed together, and the cycle continues. Tempering can be inverted, and we can easily reconstruct the entire state of the PRNG, and guess every subsequent number. This requires 625 consequent integers (state plus one more number in case of refresh). For this attack to work, only we are allowed to log in when we poll the server. In case that the admin logs in, we must start again.
 \end{itemize}
-After we obtain the next state, we should replace the cookie in our browser with the next generated value, and wait for \textit{Alice} to log in again. Once we gain access to the \textit{Alice's} account, we can see that he is up to no good. By inspecting the chat, we obtain an image that shows the next target. The image looks like a city, but isn't identifiable. This is likely a steganography challenge. The data is hidden in LSB of every channel (red, green and blue) separately.
+After we obtain the next state, we should replace the cookie in our browser with the next generated value, and wait for \textit{Alice} to log in again. Once we gain access to the \textit{Alice's} account, we can see that she is up to no good. By inspecting the chat, we obtain an image that shows the next target. The image looks like a city, but isn't identifiable. This is likely a steganography challenge. The data is hidden in the LSB (Least Significant Bit) of every channel (red, green and blue) separately.
 
 \subsection{Step-by-step instructions}
 
 \begin{itemize}
 \item Generate 625 session IDs by using python3 with the given program in the requirement section.
  
-\item Get the state of the generator of the Mersenne Twister and predict some of the next session IDs, by using the Mersenne twister recoverer from \url{https://github.com/eboda/mersenne-twister-recover}. We recommend you to generate next 50 session IDs in advance. The programs that generates first 625 session IDs and the next 50 ones can be found in the client machine under the \texttt{Documents/attack} folder.
+\item Get the state of the generator of the Mersenne Twister and predict some of the next session IDs, by using the Mersenne twister recoverer from \url{https://github.com/eboda/mersenne-twister-recover}. We recommend you to generate the next 50 session IDs in advance. The programs that generates the first 625 session IDs and the next 50 ones can be found in the client machine under the following folder: \texttt{Documents/attack}.
 
-\item Every 5 minutes \textit{Alice} will log in to the website, so you may have to wait for \textit{Alice} to log in for the first time. After 5 minutes, you can either try to change the cookie to the next one, or you can log out and log in again to see what is the current session ID in order to avoid any mistakes. After you log in after 5 minutes, you will know that the previous session ID is the session ID of the \textit{Alice}.  
+\item Every 5 minutes \textit{Alice} will log into the website, so you may have to wait for \textit{Alice} to log in for the first time. After 5 minutes, you can either try to change the cookie to the next one, or you can log out and log in again to see what is the current session ID in order to avoid any mistakes. After you log in for the second time, you will know that the previous session ID is the session ID of the \textit{Alice}.  
  
 \item Change your session ID to \textit{admin's} session ID (Session hijacking). In order to edit the session ID, you must:
 \begin{itemize}
@@ -191,7 +191,7 @@ After we obtain the next state, we should replace the cookie in our browser with
 \begin{figure}[H]
     \includegraphics[width=\linewidth]{images/steganography.png}
 	\end{figure}
-\item Extract the secret data by seperating all three different channels (red, green, blue) from the image and get the LSB in every channel. You can do this by using the following program:
+\item Extract the secret data by separating all three different channels (red, green, blue) from the image and get the LSB in every channel. You can do this by using the following program:
 
 \begin{verbatim}
 import png
@@ -237,7 +237,7 @@ print(redText)
 print(greenText)
 print(blueText)
 \end{verbatim}
-\item If we take least significant bit of every color in the image, the start of the red channel will form a string \ang{38;53;52} N \ang{77;02;11} W. These are the coordinates of the White House. Other two channels have easter eggs in them. Hurry and protect the president!
+\item If we take the least significant bit of every color in the image, the start of the red channel will form a string \ang{38;53;52} N \ang{77;02;11} W. These are the coordinates of the White House. Other two channels have Easter eggs in them. Hurry up and protect the president!
 \end{itemize}
 
 \section{Implementation}
@@ -245,8 +245,7 @@ print(blueText)
 The implementation of the system can be divided into two parts:
 \begin{itemize}
 	\item \textit{Creating a website with a chat in it and with predictable session IDs.} \\
-	 The website is very simple. Since a feature that provides a chat isn't really necessary, we created just a static chat, where the users supposedly can communicate. This means the chat can only be read what is written so far.
-Next implementation step, was to generate session IDs by using the Mersenne Twister. This was also very simple since the twister MT-19937 is already provided in python.
+	 The website is very simple. The website is written in Python and Flask framework. Since a feature that provides a chat isn't really necessary, we created just a static chat, where the users can supposedly communicate. This means that the chat is frozen and contains some static text which can only be read. Next implementation step, was to generate session IDs by using the Mersenne Twister. This was also very simple since the twister MT-19937 is already provided in Python as a default pseudorandom generator, which has a period length of $2^{19937}$.
 	\item \textit{Generating an image where some information is hidden by using steganography.}\\
 	We created a script, which hides the data in a picture. The created picture was then added inside the static chat afterwards.
 \end{itemize}
