@@ -1,0 +1,51 @@
+Feedback Challenge Proposal - Team 09:
+
+1. Challenge
+///
+The challenge highlights nicely the insecurity of using a PRNG for session
+tokens. I would suggest including, in the description, the fact that the
+Mersenne Twister is used to generate the session-IDs (or just that the website
+is known to love the Mersenne Twister), as well as the recommended tool for
+reversing the Mersenne Twister. Alternatively, you would need to include steps
+for deducing the type of PRNG used. It would also be necessary to mention in the
+description Alice's login pattern ("she logs in every X minutes from the hour"),
+as the challenger has no way of knowing otherwise that the system is dynamic.
+Finally, a timer value of 15 minutes may be too high (and how long does her
+session remain valid for?), as a failed/missed attempt would require waiting
+another 15 minutes to try again.
+
+///////////
+With regards to your remark, this would indeed be possible but it may take the
+focus away from the usage of a PRNG instead of a CSPRNG and more towards the
+reuse of the seed. I would stick with your original approach unless it is not
+possible to extract the state without consecutive IDs or due to other
+complications in a dynamic system, with your desired tool.
+
+//////////
+Note however that cryptography & steganography have somewhat different
+objectives. Steganography aims to hide the fact that some text/message is being
+sent and is of valid use for that purpose, but it was misapplied by Alice here.
+
+
+2. Form
+///
+The requirements should list all the components of the system, not just of the
+user and client. Thus descriptions of algorithms and their implementations
+(php-Mersenne vs c) that comprise the system should be detailed.
+
+////
+Adding some screenshots and more detailed SBS instructions should be easy once
+you have the implementation, but remember that the SBS should make it clear how
+to accomplish each step (e.g. is a script needed for requesting the 600+ session
+IDs?).
+
+////
+Make sure that you include an implementation section, as well as a section about
+the setup of the challenge if anything more than just starting the VMs is
+needed. Keep in mind that we don't want to spend time to figure out how to setup
+and do your challenge.
+
+
+3. Misc. comments
+
+Section 4: Do you mean CSPRNG instead of CSPNR?

@@ -33,3 +33,16 @@ You will need python3 and requests library to run two code-breaking scripts. Aft
 Take the first token, and copy it to your browser as netsecLoginCookie value. Wait for the next admin login, and hijack his session :D
 
 Note that if you cannot obtain 625 consecutive tokens, you can try to brute-force the ones you have using untwister. This usually takes 2-4 hrs.
+
+
+
+
+
+If you get an error when starting the VMs about a non existing adapter it's probably because of that **Host-only adapters**. The **Host-only adapters** are here just to connect directly from the host machine running the VMs to each VM without having to resort to tunneling. In a realistic scenario this separate network **would not exist.**
+
+
+
+![configure](host-only.png)
+
+Configuration for **Host-only** adapter.
+
