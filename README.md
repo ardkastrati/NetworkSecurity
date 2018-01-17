@@ -36,7 +36,7 @@ Note that if you cannot obtain 625 consecutive tokens, you can try to brute-forc
 
 
 
-#Host-only adapters
+# Host-only adapters
 
 If you get an error when starting the VMs about a non existing adapter it's probably because of that **Host-only adapters**. The **Host-only adapters** are here just to connect directly from the host machine running the VMs to each VM without having to resort to tunneling. In a realistic scenario this separate network **would not exist.**
 
