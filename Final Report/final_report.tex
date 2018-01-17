@@ -245,11 +245,30 @@ print(blueText)
 The implementation of the system can be divided into two parts:
 \begin{itemize}
 	\item \textit{Creating a website with a chat in it and with predictable session IDs.} \\
-	 The website is very simple. The website is written in Python and Flask framework. Since a feature that provides a chat isn't really necessary, we created just a static chat, where the users can supposedly communicate. This means that the chat is frozen and contains some static text which can only be read. Next implementation step, was to generate session IDs by using the Mersenne Twister. This was also very simple since the twister MT-19937 is already provided in Python as a default pseudorandom generator, which has a period length of $2^{19937}$.
+	 The website is very simple. The website is written in Python and Flask framework. Only few features are supported in the website. 
+\begin{itemize}
+\item Log In\\
+The web server provides an interface where the clients can log in via the internet by using his/her credentials. 
+					
+\item Home\\
+Information about the account can be found. This data is frozen and no further functions are provided.
+				
+\item News\\
+Latest news in the world. This data is also frozen and no further functions are provided, since they are not relevant for the challenge.
+				
+\item Chat\\
+Since a feature that provides a chat isn't really necessary, we created just a static chat, where the users can supposedly communicate. This means that the chat is frozen and contains some static text which can only be read.
+				
+\end{itemize}			 
+	 
+	  Next implementation step, was to generate session IDs by using the Mersenne Twister. This was also very simple since the twister MT-19937 is already provided in Python as a default pseudorandom generator, which has a period length of $2^{19937}$. We use always the same seed $1337$ in the beginning. For simplicity during the implementation of the website, we chose all communication between the web server and the client to be sent by using HTTP --- the data is \textbf{not} encrypted and \textbf{not} authenticated. This means, other active attacks are also possible (e.g. Man in the Middle). They are however not part of this challenge. 
+
+	  
 	\item \textit{Generating an image where some information is hidden by using steganography.}\\
 	We created a script, which hides the data in a picture. The created picture was then added inside the static chat afterwards.
 \end{itemize}
 
+The implementation can be found in the web server under the folder \texttt{netsec-project}.
 \begin{spacing}{1}
   \bibliographystyle{plain}
   \bibliography{mybibtexDB}
