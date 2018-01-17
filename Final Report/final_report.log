@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.11.13)  17 JAN 2018 23:54
+This is pdfTeX, Version 3.14159265-2.6-1.40.16 (TeX Live 2015) (preloaded format=pdflatex 2015.11.13)  18 JAN 2018 00:04
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1005,7 +1005,7 @@ binaryGreen), 8)][]
 Here is how much of TeX's memory you used:
  24262 strings out of 493089
  515289 string characters out of 6134841
- 507198 words of memory out of 5000000
+ 507195 words of memory out of 5000000
  27371 multiletter control sequences out of 15000+600000
  17329 words of font info for 67 fonts, out of 8000000 for 9000
  1142 hyphenation exceptions out of 8191
@@ -1022,7 +1022,7 @@ ive/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texli
 ve/2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive
 /2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/
 2015/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb>
-Output written on final_report.pdf (7 pages, 742003 bytes).
+Output written on final_report.pdf (7 pages, 741897 bytes).
 PDF statistics:
  90 PDF objects out of 1000 (max. 8388607)
  58 compressed objects within 1 object stream
