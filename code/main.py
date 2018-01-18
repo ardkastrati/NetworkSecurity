@@ -73,7 +73,6 @@ def login_form():
     global prng
 
     data = request.form
-    value = str(prng.getrandbits(32))
 
     with open('db.json', 'r') as file:
         db = json.load(file)
@@ -81,6 +80,7 @@ def login_form():
     # This can be used to test admin pages. In the final version, admin prompt should be removed
     #
     if data['user'] == 'admin' and data['password'] == 'verylongandsecretpassword':
+        value = str(prng.getrandbits(32))
         response = make_response(render_template('home.html', profile=db['profiles']['admin']))
         response.set_cookie('netsecLoginCookie', value)
         loggedInUserCookies[value] = 'admin'
@@ -90,6 +90,7 @@ def login_form():
     # Log in user, and send him his cookie :)
     #
     elif userData[data['user']] == data['password']:
+        value = str(prng.getrandbits(32))
         response = make_response(render_template('home.html', profile=db['profiles'][data['user']]))
         response.set_cookie('netsecLoginCookie', value)
         loggedInUserCookies[value] = data['user']
