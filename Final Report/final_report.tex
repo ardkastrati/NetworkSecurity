@@ -154,7 +154,7 @@ Web Security \& Cryptography
 After logging in, we see a harmless profile with chat and news. However, if we look at the cookies, we will see a \texttt{netsecLoginCookie}. If we log out and log in again, we see that the value changed. Multiple logins tell us that the cookie is always less than 32-bits, and its value changes randomly. That randomness is the key. Mersenne twister is not a cryptographically secure pseudorandom generator. There are two possible attacks on this PRNG:
 \begin{itemize}
 \item We can download Untwister (\url{https://github.com/altf4/untwister}) presented at BSides in Las Vegas in 2014. We only need a few generated values to obtain the seed. Unfortunately, this is done by brute force. It is possible to do it this way because seed has 32-bits, but it still takes 3-4 hours in the general case. We decided to use a small seed value, so this attack takes only a few seconds.
-\item  If we look at the implementation of the Mersenne twister, we can see that it is just a big XOR machine with 624 numbers as its state. Every number is transformed (tempered), and output as a random value, until all 624 numbers are used. The state is then transformed together, and the cycle continues. Tempering can be inverted, and we can easily reconstruct the entire state of the PRNG, and guess every subsequent number. This requires 625 consequent integers (state plus one more number in case of refresh). For this attack to work, only we are allowed to log in when we poll the server. In case that the admin logs in, we must start again.
+\item  If we look at the implementation of the Mersenne twister, we can see that it is just a big XOR machine with 624 numbers as its state. Every number is transformed (tempered), and output as a random value, until all 624 numbers are used. The state is then transformed together, and the cycle continues. Tempering can be inverted, and we can easily reconstruct the entire state of the PRNG, and guess every subsequent number. This requires 625 consequent integers (state plus one more number in case of refresh). For this attack to work, only we are allowed to log in when we poll the server. In case that the \textit{Alice} logs in, we must start again.
 \end{itemize}
 After we obtain the next state, we should replace the cookie in our browser with the next generated value, and wait for \textit{Alice} to log in again. Once we gain access to the \textit{Alice's} account, we can see that she is up to no good. By inspecting the chat, we obtain an image that shows the next target. The image looks like a city, but isn't identifiable. This is likely a steganography challenge. The data is hidden in the LSB (Least Significant Bit) of every channel (red, green and blue) separately.
 
@@ -167,7 +167,7 @@ After we obtain the next state, we should replace the cookie in our browser with
 
 \item Every 5 minutes \textit{Alice} will log into the website, so you may have to wait for \textit{Alice} to log in for the first time. After 5 minutes, you can either try to change the cookie to the next one, or you can log out and log in again to see what is the current session ID in order to avoid any mistakes. After you log in for the second time, you will know that the previous session ID is the session ID of the \textit{Alice}.  
  
-\item Change your session ID to \textit{admin's} session ID (Session hijacking). In order to edit the session ID, you must:
+\item Change your session ID to \textit{Alice's} session ID (Session hijacking). In order to edit the session ID, you must:
 \begin{itemize}
 	\item Open developer tools (\textit{Tools} $\rightarrow$ \textit{Web Developer} $\rightarrow$ \textit{Toggle Tools})
 	\begin{figure}[H]
@@ -177,7 +177,7 @@ After we obtain the next state, we should replace the cookie in our browser with
 	\begin{figure}[H]
     \includegraphics[width=\linewidth]{images/storageEnable.png}
 	\end{figure}
-	\item Change the \texttt{netsecLoginCookie} to the \textit{admin's} session ID.
+	\item Change the \texttt{netsecLoginCookie} to the \textit{Alice's} session ID.
 	\begin{figure}[H]
     \includegraphics[width=\linewidth]{images/changeCookie.png}
 	\end{figure}
